@@ -3,24 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pestelle <pestelle@student.42barcel>       +#+  +:+       +#+        */
+/*   By: pestelle <pestelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/03 16:15:54 by pestelle          #+#    #+#             */
-/*   Updated: 2024/01/03 16:15:59 by pestelle         ###   ########.fr       */
+/*   Created: 2024/01/03 14:58:16 by pestelle          #+#    #+#             */
+/*   Updated: 2024/01/07 17:07:58 by pestelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "get_next_line.h"
 
-
-#include "get_next_line_bonus.h"
-
-char	*ft_free(char *buffer, char *buf)
+char	*ft_free(char *buffer)
 {
-	char	*temp;
-
-	temp = ft_strjoin(buffer, buf);
 	free(buffer);
-	return (temp);
+	buffer = NULL;
+	return (NULL);
 }
 
 char	*ft_next(char *buffer)
@@ -34,15 +30,15 @@ char	*ft_next(char *buffer)
 		i++;
 	if (!buffer[i])
 	{
-		free(buffer);
+		ft_free(buffer);
 		return (NULL);
 	}
-	line = ft_calloc((ft_strlen(buffer) - i + 1), sizeof(char));
+	line = ft_calloc(ft_strlen(buffer) - i + 1, sizeof(char));
 	i++;
 	j = 0;
 	while (buffer[i])
 		line[j++] = buffer[i++];
-	free(buffer);
+	ft_free(buffer);
 	return (line);
 }
 
@@ -72,45 +68,54 @@ char	*read_file(int fd, char *res)
 {
 	char	*buffer;
 	int		byte_read;
+	char	*temp;
 
 	if (!res)
 		res = ft_calloc(1, 1);
 	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	byte_read = 1;
+	byte_read = read(fd, buffer, BUFFER_SIZE);
 	while (byte_read > 0)
 	{
-		byte_read = read(fd, buffer, BUFFER_SIZE);
 		if (byte_read == -1)
 		{
-			free(buffer);
-			return (NULL);
+			ft_free(buffer);
+			return (ft_free(res));
 		}
-		buffer[byte_read] = 0;
-		res = ft_free(res, buffer);
+		buffer[byte_read] = '\0';
+		temp = ft_strjoin(res, buffer);
+		ft_free(res);
+		res = temp;
 		if (ft_strchr(buffer, '\n'))
 			break ;
+		byte_read = read(fd, buffer, BUFFER_SIZE);
 	}
-	free(buffer);
+	ft_free(buffer);
 	return (res);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer[OPEN_MAX + 1];
+	static char	*buffer[OPEN_MAX];
 	char		*line;
 
 	if (read(fd, 0, 0) < 0)
 	{
-		free(buffer[fd]);
+		ft_free(buffer[fd]);
 		buffer[fd] = NULL;
 		return (NULL);
 	}
-	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	buffer[fd] = read_file(fd, buffer[fd]);
 	if (!buffer[fd])
 		return (NULL);
 	line = ft_line(buffer[fd]);
 	buffer[fd] = ft_next(buffer[fd]);
+	if (line && line[0] == '\0')
+	{
+		ft_free(line);
+		ft_free(buffer[fd]);
+		return (NULL);
+	}
 	return (line);
 }

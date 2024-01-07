@@ -6,16 +6,23 @@
 /*   By: pestelle <pestelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:58:29 by pestelle          #+#    #+#             */
-/*   Updated: 2024/01/04 12:29:37 by pestelle         ###   ########.fr       */
+/*   Updated: 2024/01/07 16:56:56 by pestelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 4096
+
+# endif
+
+# include <fcntl.h>
+# include <limits.h>
+# include <stdio.h>
 # include <stdlib.h>
-# include <sys/types.h>
-# include <sys/uio.h>
+# include <string.h>
 # include <unistd.h>
 
 // get_next_line_utils.c

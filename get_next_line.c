@@ -6,7 +6,7 @@
 /*   By: pestelle <pestelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:58:16 by pestelle          #+#    #+#             */
-/*   Updated: 2024/01/04 13:32:11 by pestelle         ###   ########.fr       */
+/*   Updated: 2024/01/07 16:56:45 by pestelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*ft_next(char *buffer)
 		i++;
 	if (!buffer[i])
 	{
-		free(buffer);
+		ft_free(buffer);
 		return (NULL);
 	}
 	line = ft_calloc((ft_strlen(buffer) - i + 1), sizeof(char));
@@ -38,7 +38,7 @@ char	*ft_next(char *buffer)
 	j = 0;
 	while (buffer[i])
 		line[j++] = buffer[i++];
-	free(buffer);
+	ft_free(buffer);
 	return (line);
 }
 
@@ -79,17 +79,17 @@ char	*read_file(int fd, char *res)
 		byte_read = read(fd, buffer, BUFFER_SIZE);
 		if (byte_read == -1)
 		{
-			free(buffer);
+			ft_free(buffer);
 			return (NULL);
 		}
 		buffer[byte_read] = '\0';
 		temp = ft_strjoin(res, buffer);
-		free(res);
+		ft_free(res);
 		res = temp;
 		if (ft_strchr(buffer, '\n'))
 			break ;
 	}
-	free(buffer);
+	ft_free(buffer);
 	return (res);
 }
 
@@ -100,7 +100,7 @@ char	*get_next_line(int fd)
 
 	if (read(fd, 0, 0) < 0)
 	{
-		free(buffer);
+		ft_free(buffer);
 		buffer = NULL;
 		return (NULL);
 	}
@@ -111,10 +111,11 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line = ft_line(buffer);
 	buffer = ft_next(buffer);
-	 if (line && line[0] == '\0')
-    {
-        free(line);
-        return (NULL);
-    }
+	if (line && line[0] == '\0')
+	{
+		ft_free(line);
+		ft_free(buffer);
+		return (NULL);
+	}
 	return (line);
 }
