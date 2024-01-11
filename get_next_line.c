@@ -6,7 +6,7 @@
 /*   By: pestelle <pestelle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:58:16 by pestelle          #+#    #+#             */
-/*   Updated: 2024/01/10 18:46:06 by pestelle         ###   ########.fr       */
+/*   Updated: 2024/01/11 15:57:38 by pestelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,18 +121,18 @@ char	*get_next_line(int fd)
 /*int	main(void)
 {
 	int		fd;
-	char	*putito;
+	char	*to;
 
 	fd = open("file.txt", O_RDONLY);
-	putito = get_next_line(fd);
-	while (putito != NULL)
+	to = get_next_line(fd);
+	while (to != NULL)
 	{
-		if (putito)
+		if (to)
 		{
-			printf("result  ========= %s %p\n", putito, putito);
-			free(putito);
+			printf("result  ========= %s %p\n", to, to);
+			free(to);
 		}
-		putito = get_next_line(fd);
+		to = get_next_line(fd);
 	}
 	close(fd);
 	return (0);
