@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pestelle <pestelle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pestelle <pestelle@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/03 14:58:29 by pestelle          #+#    #+#             */
-/*   Updated: 2024/01/07 17:08:54 by pestelle         ###   ########.fr       */
+/*   Created: 2024/01/11 13:38:53 by pestelle          #+#    #+#             */
+/*   Updated: 2024/01/11 15:07:34 by pestelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 # define GET_NEXT_LINE_BONUS_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 4096
-
+#  define BUFFER_SIZE 42
 # endif
 
 # include <fcntl.h>
@@ -29,11 +28,11 @@
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_strchr(const char *s, int c);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin(char *s1, char *s2);
 size_t	ft_strlen(const char *s);
 
 // get_next_line.c
-char	*ft_free(char *buffer);
+void	*ft_free(char **buffer);
 char	*read_file(int fd, char *res);
 char	*get_next_line(int fd);
 char	*ft_next(char *buffer);
